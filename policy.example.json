@@ -1,0 +1,12 @@
+{
+  "protected_services": ["prod-recorder", "telemetry-ingestor"],
+  "protected_processes": ["live_recorder.py"],
+  "protected_db_paths": [
+    "/var/lib/app/prod_history.db",
+    "/var/lib/app/prod_history.db-wal",
+    "/var/lib/app/prod_history.db-shm"
+  ],
+  "protected_db_filenames": ["prod_history.db"],
+  "protected_fuse_mounts": ["/mnt/cloud_drive", "/mnt/gdrive"],
+  "blocked_binaries": ["shred", "mkfs"]
+}
