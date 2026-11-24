@@ -1,5 +1,7 @@
 # agent-safety-guard
 
+[![CI](https://github.com/razin-core/agent-safety-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/razin-core/agent-safety-guard/actions/workflows/ci.yml)
+
 Lightweight, zero-dependency **`PreToolUse` programmatic safety hook** for CLI AI agents (Antigravity CLI / Claude Code / MCP tool gateways).
 
 Prompt instructions alone are soft guardrails. This hook enforces hard, deterministic policy checks **before** a tool call executes on the host:
