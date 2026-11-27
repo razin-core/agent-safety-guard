@@ -16,6 +16,24 @@ Prompt instructions alone are soft guardrails. This hook enforces hard, determin
 
 Configure your agent runtime `PreToolUse` hook to pipe tool-call JSON into `safety_guard.py` and optionally point `AGENT_SAFETY_POLICY` to a custom JSON policy file (see `policy.example.json`):
 
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_file|edit_file",
+        "hooks": [{ "type": "command", "command": "python3 /path/to/safety_guard.py" }]
+      }
+    ]
+  }
+}
+```
+
+### Contract & Failure Mode
+- **Input (`stdin`):** JSON tool-call payload (`{"toolCall": {"name": "...", "args": {...}}}`).
+- **Output (`stdout`):** `{"decision": "allow"}` or `{"decision": "deny", "reason": "..."}`.
+- **Malformed JSON:** Fails open by default so truncated stdin does not brick an interactive session; set `AGENT_SAFETY_FAIL_CLOSED=1` to deny malformed payloads.
+
 ```bash
 echo '{"toolCall":{"name":"run_command","args":{"CommandLine":"rm -rf ~/"}}}' | python3 safety_guard.py
 # -> {"decision": "deny", "reason": "BLOCKED BY SAFETY-HOOK: ..."}

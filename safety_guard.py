@@ -136,7 +136,10 @@ def main() -> None:
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError:
-        sys.stdout.write(json.dumps({"decision": "allow"}) + "\n")
+        if os.environ.get("AGENT_SAFETY_FAIL_CLOSED", "").lower() in ("1", "true", "yes"):
+            sys.stdout.write(json.dumps({"decision": "deny", "reason": "BLOCKED BY SAFETY-HOOK: malformed JSON input."}) + "\n")
+        else:
+            sys.stdout.write(json.dumps({"decision": "allow"}) + "\n")
         return
 
     result = evaluate_tool_call(payload)
